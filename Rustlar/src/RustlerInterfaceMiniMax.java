@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,7 +13,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
-public class RustlerInterface extends JFrame implements MouseListener{
+public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 	
 	static Rider br1,br2,br3,br4, wr1, wr2, wr3,wr4;
 	static Horse bh, wh;
@@ -35,23 +36,12 @@ public class RustlerInterface extends JFrame implements MouseListener{
 	
 	public static void main(String[] args) {
    
-		/*
-		wr1 = new Rider("WR1", "White_Pawn.png", 0);
-		wr2 = new Rider("WR2", "White_Pawn.png", 0);
-		wr3 = new Rider("WR3", "White_Pawn.png", 0);
-		wr4 = new Rider("WR4", "White_Pawn.png", 0);
-		wh = new Horse("WH", "White_Horse.png", 0);
-		br1 = new Rider("BR1", "Black_Pawn.png", 1);
-		br2 = new Rider("BR2", "Black_Pawn.png", 1);
-		br3 = new Rider("BR3", "Black_Pawn.png", 1);
-		br4 = new Rider("BR4", "Black_Pawn.png", 1);
-		bh = new Horse("BH", "Black_Horse.png", 1);
-		*/
-		RustlerInterface rustler=new RustlerInterface();
+		
+		RustlerInterfaceMiniMax rustler=new RustlerInterfaceMiniMax();
 	
 	}		
 	
-	public RustlerInterface(){
+	public RustlerInterfaceMiniMax(){
 		
 		
 		setSize(900,650);
@@ -114,7 +104,7 @@ public class RustlerInterface extends JFrame implements MouseListener{
 		player1.setLocation(650, 50);
 		player1.setSize(200, 50);
 		
-		player2= new JLabel("Player 2: Random Player - Black");
+		player2= new JLabel("Player 2: MinMax Player - Black");
 		player2.setLocation(650, 450);
 		player2.setSize(200, 50);
 		
@@ -144,58 +134,7 @@ public class RustlerInterface extends JFrame implements MouseListener{
 		
 	}	
 	
-	/*
-	 public Cell findHorse(int color){
-		 
-		 for(int i=0; i<7; i++){
-			 for(int j=0; j<7; j++){
-				 if(boardState[i][j].getPiece() instanceof Horse && boardState[i][j].getPiece().getColor()==color){
-					 horseCell = boardState[i][j];
-					 break;
-				 }
-			 }
-		 }
 	
-		 return horseCell;
-	 }
-	
-	  // It checks if the horse of given color is captured. If true then the game is finished and other player wins 
-	  public boolean isSurrounded(int color){
-		  boolean result=false;
-		  Cell c1= findHorse(color);
-		 
-		  horseEdgeCells=c1.getPiece().move(boardState, c1.getXPoz(), c1.getYPoz());
-		  
-		  for(int i=0; i<horseEdgeCells.size(); i++){
-			  if(horseEdgeCells.get(i).getPiece() instanceof Rider && horseEdgeCells.get(i).getPiece().getColor()!=color){
-				  
-			  }
-		  }
-		  
-		  if(color==0 ){
-			if(boardState[c1.getXPoz()-1][c1.getYPoz()].getPiece() instanceof Rider && boardState[c1.getXPoz()-1][c1.getYPoz()].getPiece().getColor()==1
-			&& boardState[c1.getXPoz()+1][c1.getYPoz()].getPiece() instanceof Rider && boardState[c1.getXPoz()+1][c1.getYPoz()].getPiece().getColor()==1
-			&& boardState[c1.getXPoz()][c1.getYPoz()-1].getPiece() instanceof Rider && boardState[c1.getXPoz()][c1.getYPoz()-1].getPiece().getColor()==1
-			&& boardState[c1.getXPoz()][c1.getYPoz()+1].getPiece() instanceof Rider && boardState[c1.getXPoz()][c1.getYPoz()+1].getPiece().getColor()==1){
-				
-				//JOptionPane.showMessageDialog(null, "Game is finished.The winner is black player!!!");
-				result=true;
-			}
-		  }
-		  if(color==1){
-			  if(boardState[c1.getXPoz()-1][c1.getYPoz()].getPiece() instanceof Rider && boardState[c1.getXPoz()-1][c1.getYPoz()].getPiece().getColor()==0
-				&& boardState[c1.getXPoz()+1][c1.getYPoz()].getPiece() instanceof Rider && boardState[c1.getXPoz()+1][c1.getYPoz()].getPiece().getColor()==0
-				&& boardState[c1.getXPoz()][c1.getYPoz()-1].getPiece() instanceof Rider && boardState[c1.getXPoz()][c1.getYPoz()-1].getPiece().getColor()==0
-				&& boardState[c1.getXPoz()][c1.getYPoz()+1].getPiece() instanceof Rider && boardState[c1.getXPoz()][c1.getYPoz()+1].getPiece().getColor()==0){
-					
-					//JOptionPane.showMessageDialog(null, "Game is finished.The winner is white player!!!");
-					result=true;
-				}
-			  }
-		
-		//System.out.println("isSurrounded works correct");  
-		return result;  
-	  }*/
 	
 	 private void cleanDestinations(ArrayList<Cell> destList)      //Function to clear the last move's destinations
 	    {
@@ -229,17 +168,10 @@ public class RustlerInterface extends JFrame implements MouseListener{
 				destinationlist=c.getPiece().move(boardState, c.xPoz, c.yPoz);
 				
 			}
-			//if(c.getPiece() instanceof Horse)
-				//return;
-				//destinationlist=filterDestination(destinationlist,c);
+		
 			else
 			{
-				/*
-				if(boardState[getHorse(chance).getx()][getKing(chance).gety()].ischeck())
-					destinationlist = new ArrayList<Cell>(filterdestination(destinationlist,c));
-				else if(destinationlist.isEmpty()==false && willkingbeindanger(c,destinationlist.get(0)))
-					destinationlist.clear();
-				*/
+				
 			}
 			highlightDestinations(destinationlist);
 		}	
@@ -397,3 +329,4 @@ public class RustlerInterface extends JFrame implements MouseListener{
 	}
 
 }
+

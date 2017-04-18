@@ -10,7 +10,7 @@ public class RandomPlayer  {
 	Random r= new Random();
 	int playingPiece;
 	public Cell randomSelectedCell , randomMove;
-	
+	Thread t;
 	
 	/*
 	public void getBoard(Cell board[][]){
@@ -144,7 +144,6 @@ public class RandomPlayer  {
 		p=blackPieces.get(playingPiece).getPiece();
 		
 		possibleRandomMoves= p.move(board, blackPieces.get(playingPiece).xPoz, blackPieces.get(playingPiece).yPoz);
-		
 		
 		
 		//System.out.println(blackPieces);

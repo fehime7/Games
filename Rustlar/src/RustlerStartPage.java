@@ -8,7 +8,7 @@ import javax.swing.*;
 public class RustlerStartPage extends JFrame{
 	
 	JLabel firstPlayer, secondPlayer;
-	JRadioButton computerPlayer1, humanPlayer1, computerPlayer2, humanPlayer2;
+	JRadioButton humanPlayer1, computerPlayerRandom, computerPlayerMinmax, humanPlayer2;
 	ButtonGroup group1, group2;
 	JButton goButton;
 	Player whitePlayer, blackPlayer;
@@ -16,7 +16,7 @@ public class RustlerStartPage extends JFrame{
 	
 	public RustlerStartPage(){
 		
-		setSize(450, 250);
+		setSize(450, 280);
 		setTitle("Rustlar Game");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -30,48 +30,48 @@ public class RustlerStartPage extends JFrame{
 		secondPlayer.setLocation(250, 50);
 		secondPlayer.setSize(200, 30);
 		
-		computerPlayer1= new JRadioButton("Computer Player:");
-		computerPlayer1.setSize(150, 30);
-		computerPlayer1.setLocation(60, 80);
 		
 		humanPlayer1= new JRadioButton("Human Player:");
 		humanPlayer1.setSize(150, 30);
 		humanPlayer1.setLocation(60, 110);
 		
-		computerPlayer2= new JRadioButton("Random Player:");
-		computerPlayer2.setSize(150, 30);
-		computerPlayer2.setLocation(250, 80);
+		computerPlayerRandom= new JRadioButton("Random Player:");
+		computerPlayerRandom.setSize(150, 30);
+		computerPlayerRandom.setLocation(250, 80);
 		
-		humanPlayer2= new JRadioButton("MiniMax Player:");
+		computerPlayerMinmax= new JRadioButton("MiniMax Player:");
+		computerPlayerMinmax.setSize(150, 30);
+		computerPlayerMinmax.setLocation(250, 110);
+		
+		humanPlayer2= new JRadioButton("Human Player:");
 		humanPlayer2.setSize(150, 30);
-		humanPlayer2.setLocation(250, 110);
+		humanPlayer2.setLocation(250, 140);
 		
 		group1=new ButtonGroup();
-		group1.add(computerPlayer1);
-		group1.add(humanPlayer1);
-		
-		group2=new ButtonGroup();
-		group2.add(computerPlayer2);
-		group2.add(humanPlayer2);
+		group1.add(computerPlayerRandom);
+		group1.add(computerPlayerMinmax);
+		group1.add(humanPlayer2);
 		
 		goButton= new JButton("START");
 		goButton.setSize(100, 50);
-		goButton.setLocation(165, 150);
+		goButton.setLocation(165, 180);
 		
 		goButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(computerPlayer1.isSelected() && computerPlayer2.isSelected() || 	  
-				   humanPlayer1.isSelected() && computerPlayer2.isSelected()) {
+				if( humanPlayer1.isSelected() && computerPlayerRandom.isSelected()) {
 					new RustlerInterface();
-					whichComputerPlayer=false;
+					//whichComputerPlayer=false;
 				    
-				}else if( computerPlayer1.isSelected() && humanPlayer2.isSelected() ||
-						  humanPlayer1.isSelected() && humanPlayer2.isSelected()){
-					new RustlerInterface();
-					whichComputerPlayer=true;
+				}else if(humanPlayer1.isSelected() && humanPlayer2.isSelected()){
+					new RustlerInterfaceHvsH();
+					//whichComputerPlayer=true;
+				
+				}else if(humanPlayer1.isSelected() && computerPlayerMinmax.isSelected()){
+					new RustlerInterfaceMiniMax();
+					//whichComputerPlayer=true;
 				}
 			
 				else {
@@ -80,11 +80,12 @@ public class RustlerStartPage extends JFrame{
 					int n=JOptionPane.showOptionDialog(null, "Select one option for each player", "Rustlar",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE,null, arr, arr[0]); 
 				}
 				
-				if (computerPlayer1.isSelected()){
+				/*
+				if (computerPlayerRandom.isSelected()){
 					whitePlayer.setHuman(false);
 					whitePlayer.setPlayerOrder(1);
 					
-				}else if (computerPlayer2.isSelected()){
+				}else if (computerPlayerMinmax.isSelected()){
 					blackPlayer.setHuman(false);
 					blackPlayer.setPlayerOrder(2);
 				
@@ -97,7 +98,7 @@ public class RustlerStartPage extends JFrame{
 					blackPlayer.setPlayerOrder(2);
 					
 				
-				}
+				}*/
 				
 									
 			}
@@ -106,9 +107,9 @@ public class RustlerStartPage extends JFrame{
 		
 		add(firstPlayer);
 		add(secondPlayer);
-		//add(computerPlayer1);
 		add(humanPlayer1);
-		add(computerPlayer2);
+		add(computerPlayerRandom);
+		add(computerPlayerMinmax);
 		add(humanPlayer2);
 		add(goButton);
 

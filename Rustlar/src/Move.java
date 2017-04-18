@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Move {
 	private int oldX;  //oldX and oldY keep track of where the the piece is coming from
@@ -91,6 +93,28 @@ public class Move {
 	public String toString(){
 		String text = p.getId() + " moved from (" + oldX + "," + oldY + ") to (" + newX + "," + newY + ")";
 		return text;
+	}
+	
+	
+	public ArrayList<Move> findAllLegalMoves(Cell [][]b , int color){
+		
+		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
+		
+		for(int i = 0; i<7; i++){
+			for(int j=0; j<7; j++){
+				
+				if(b[i][j].getPiece() !=null && b[i][j].getPiece() instanceof Rider && b[i][j].getPiece().getColor()==color){
+					
+					moves.addAll(b[i][j].getPiece().move2(b, i, j));
+						
+				}
+			}
+		}
+		
+		
+		
+		return moves;
+
 	}
 	
 }	

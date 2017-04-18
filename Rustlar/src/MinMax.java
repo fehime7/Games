@@ -6,6 +6,9 @@ public class MinMax {
 	public Cell [][] board;
 	public Cell bestMove;
 	public Piece playingPiece;
+	private Cell [][] newBoard; 
+	private Move bestmove;
+
 	
 	/**
 	 * The makeMove method takes a board as a parameter and generates all the possible AI moves
@@ -13,6 +16,90 @@ public class MinMax {
 	 * possible board to figure out the best move.  
 	 * 
 	 */
+	
+	//coding after April
+	public Move minimaxnaive(Cell [][]b , int depth){
+		int bestscore;
+		//Move bestmove=null;
+		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
+
+		
+		if(depth==0 ){
+			bestscore=evaluate(b);
+		
+
+		}
+		else{
+			if(depth!=0 && depth%2==0){ //max player so black player in my game
+				bestscore=Integer.MIN_VALUE;
+				moves=findAllLegalMoves(b);
+				for(Move move : moves){
+					newBoard=doMove(b,move);
+					move=minimaxnaive(newBoard, depth-1);
+					int score=evaluate(newBoard);
+					if(score>bestscore){ //black maximizes its score
+						bestscore=score;
+						bestmove=move;
+					}
+				}
+				
+			}
+			else{//min player so white player in my game
+				bestscore=Integer.MAX_VALUE;
+				moves=findAllLegalMoves(b);
+				for(Move move : moves){
+					newBoard=doMove(b,move);
+					move=minimaxnaive(newBoard, depth-1);
+					int score=evaluate(newBoard);
+					if(score<bestscore){ //white minimizes its score
+						bestscore=score;
+						bestmove=move;
+					}
+				}
+				
+			}
+			
+		}
+		
+		
+		return bestmove;
+	}
+	
+	public Cell [][] doMove(Cell [][]oldBoard, Move moveToMake){
+		
+		if(oldBoard !=null ){
+			oldBoard[moveToMake.getOldX()][moveToMake.getOldY()].removePiece();
+			oldBoard[moveToMake.getNewX()][moveToMake.getNewY()].setPiece(moveToMake.getPiece());
+		}
+		
+		return oldBoard;
+	}
+	
+	public ArrayList<Move> findAllLegalMoves(Cell [][]b ){
+		
+		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
+		
+		for(int i = 0; i<7; i++){
+			for(int j=0; j<7; j++){
+				
+				if(b[i][j].getPiece() !=null){
+					
+					moves.addAll(b[i][j].getPiece().move2(b, i, j));
+						
+				}
+			}
+		}
+		
+		
+		System.out.println(moves);
+		return moves;
+
+	}
+	
+	
+	
+	//Old codings
+	
 	public Cell makeMinMaxMove(Cell [][] b) {
 		// TODO Auto-generated method stub
 		//generate all legal moves

@@ -225,6 +225,13 @@ public class Horse extends Piece {
 		 
 		 return result;
 	 }
+
+
+	@Override
+	public ArrayList<Move> move2(Cell[][] pos, int x, int y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	 
 	 
    

@@ -167,7 +167,4 @@ public class RandomPlayer  {
 		possibleRandomMoves.clear();
 	}
 	
-	public void printFeco(){
-		System.out.println("Fehime");
-	}
 }

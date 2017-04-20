@@ -27,7 +27,7 @@ public class RustlerInterface extends JFrame implements MouseListener{
 	private Player tempPlayer;
 	private JPanel board;
 	JLabel player1, player2, whosTurn, minimaxBestScore;
-	boolean didWhiteplayed=false;
+	boolean didWhiteplayed=false, isFinished=false;
 	RandomPlayer randomPlayer = new RandomPlayer();
 	MinMax mm=new MinMax();
 	MinMaxTwo mm2=new MinMaxTwo();
@@ -219,7 +219,7 @@ public class RustlerInterface extends JFrame implements MouseListener{
 		// TODO Auto-generated method stub
 		
 		c=(Cell)e.getSource();
-		if (previous==null)
+		if (previous==null && isFinished==false)
 		{
 			if(c.getPiece()!=null && c.getPiece().getColor()!=1 && didWhiteplayed == false)
 			{
@@ -291,17 +291,18 @@ public class RustlerInterface extends JFrame implements MouseListener{
 		if(wh.isSurrounded(boardState, 0)==true){
 			JOptionPane.showMessageDialog(null, "Game is finished.The winner is black player!!!");
 			System.out.println("isSurrounded works correct");
-			
+			isFinished=true;
 			
 
 		}
 		else if(bh.isSurrounded(boardState, 1)){
 			JOptionPane.showMessageDialog(null, "Game is finished.The winner is white player!!!");
 			System.out.println("isSurrounded works correct");  
+			isFinished=true;
 
 		}
 		
-		if ( didWhiteplayed==true){
+		if ( didWhiteplayed==true && isFinished==false){
 			
 			randomPlayer.findAllBlacks(boardState); //This is necessary to have a black piece list for next methods
 			destinationlist=randomPlayer.highLightRandomMoves(boardState);

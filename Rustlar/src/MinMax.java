@@ -18,10 +18,11 @@ public class MinMax {
 	 */
 	
 	//coding after April
-	public Move minimaxnaive(Cell [][]b , int depth){
+	public Move minimaxnaive(Cell [][]b , int depth, int color ){
 		int bestscore;
 		//Move bestmove=null;
 		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
+		
 
 		
 		if(depth==0 ){
@@ -30,46 +31,67 @@ public class MinMax {
 
 		}
 		else{
-			if(depth!=0 && depth%2==0){ //max player so black player in my game
+			if(color==1){ //max player so black player in my game
 				bestscore=Integer.MIN_VALUE;
 				moves=findAllLegalMoves(b);
+				System.out.println(moves.size());
+				//System.exit(1);
 				for(Move move : moves){
+					System.out.println("move in max  "+move);
 					newBoard=doMove(b,move);
-					move=minimaxnaive(newBoard, depth-1);
+					System.out.println("The new board = "+newBoard);
+
+					move=minimaxnaive(newBoard, depth-1,0);
 					int score=evaluate(newBoard);
+					System.out.println("Score for evaluate new board = "+score);
+
+//					System.out.println(score);
 					if(score>bestscore){ //black maximizes its score
 						bestscore=score;
 						bestmove=move;
+						System.out.println("After cheking best move = "+bestmove);
+						System.exit(1);
 					}
 				}
+				//return bestmove;
 				
 			}
 			else{//min player so white player in my game
 				bestscore=Integer.MAX_VALUE;
 				moves=findAllLegalMoves(b);
 				for(Move move : moves){
+					System.out.println("move in min  "+move);
 					newBoard=doMove(b,move);
-					move=minimaxnaive(newBoard, depth-1);
+					System.out.println("The new board = "+newBoard);
+					move=minimaxnaive(newBoard, depth-1,1);
 					int score=evaluate(newBoard);
+					System.out.println("Score for evaluate new board = "+score);
 					if(score<bestscore){ //white minimizes its score
 						bestscore=score;
 						bestmove=move;
+						System.out.println("After cheking best move = "+bestmove);
+						//System.exit(1);
 					}
 				}
+				//return bestmove;
+
 				
 			}
 			
 		}
-		
-		
+		//System.out.println(moves.size());
 		return bestmove;
+
+		
 	}
 	
 	public Cell [][] doMove(Cell [][]oldBoard, Move moveToMake){
 		
 		if(oldBoard !=null ){
-			oldBoard[moveToMake.getOldX()][moveToMake.getOldY()].removePiece();
+
 			oldBoard[moveToMake.getNewX()][moveToMake.getNewY()].setPiece(moveToMake.getPiece());
+			oldBoard[moveToMake.getOldX()][moveToMake.getOldY()].removePiece();
+
 		}
 		
 		return oldBoard;
@@ -91,7 +113,7 @@ public class MinMax {
 		}
 		
 		
-		System.out.println(moves);
+		//System.out.println(moves);
 		return moves;
 
 	}
@@ -306,16 +328,10 @@ public class MinMax {
 		 */
 		for(int i=0; i<7; i++){
 			for(int j=0; j<7; j++){	
-					System.out.println("working here");
-					//System.out.print(i);
-					//System.out.println(j);
-					//System.out.println(b[i][j].getXPoz());
-					//System.out.println(b[i][j].getYPoz());
-					System.out.println(b[i][j].getPiece());
 
 					if( b[i][j].getPiece() !=null && b[i][j].getPiece().getColor() == 0 && b[i][j].getPiece() instanceof Rider){ //case that piece is white
 						
-							whitescore += 10;
+							whitescore += 0;
 					}		
 				    else if(b[i][j].getPiece() !=null && b[i][j].getPiece().getColor() == 0 && b[i][j].getPiece() instanceof Horse){
 							whitescore += 100;
@@ -330,8 +346,8 @@ public class MinMax {
 					}				
 			}
 		}
-		System.out.println(whitescore);
-		System.out.println(blackscore);
+		//System.out.println(whitescore);
+		//System.out.println(blackscore);
 		return blackscore-whitescore; //returns blackscore-whitescore, black player tries to maximize, white player tries to minimize
 	}
 	

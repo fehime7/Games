@@ -28,7 +28,7 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 	private Player tempPlayer;
 	private JPanel board;
 	JLabel player1, player2, whosTurn, minimaxBestScore;
-	boolean didWhiteplayed=false;
+	boolean didWhiteplayed=false, isfinished=false;
 	RandomPlayer randomPlayer = new RandomPlayer();
 	MinMax mm=new MinMax();
 	MinMaxTwo mm2=new MinMaxTwo();
@@ -158,7 +158,7 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 		// TODO Auto-generated method stub
 		
 		c=(Cell)e.getSource();
-		if (previous==null)
+		if (previous==null && isfinished==false)
 		{
 			if(c.getPiece()!=null && c.getPiece().getColor()!=1 && didWhiteplayed == false)
 			{
@@ -223,65 +223,38 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 		if(wh.isSurrounded(boardState, 0)==true){
 			JOptionPane.showMessageDialog(null, "Game is finished.The winner is black player!!!");
 			System.out.println("isSurrounded works correct");
-			
+			isfinished=true;
 			
 
 		}
 		else if(bh.isSurrounded(boardState, 1)){
 			JOptionPane.showMessageDialog(null, "Game is finished.The winner is white player!!!");
-			System.out.println("isSurrounded works correct");  
+			System.out.println("isSurrounded works correct"); 
+			isfinished=true;
 
 		}
 		
-		if ( didWhiteplayed==true){
-			
-			randomPlayer.findAllBlacks(boardState); //This is necessary to have a black piece list for next methods
-			destinationlist=randomPlayer.highLightRandomMoves(boardState);
-			c=randomPlayer.randomSelectedCell;
-			previous=c;
-			c.select();
-	
-			highlightDestinations(destinationlist);
+		
+		if ( didWhiteplayed==true && isfinished==false){
 			
 			
-			c=randomPlayer.makeRandomMove();
-			
-			c.setPiece(previous.getPiece());
-			previous.removePiece();
-			previous.deselect();
-			cleanDestinations(destinationlist);
-			destinationlist.clear();
-			
-			randomPlayer.clearLists();
+			//boardState[2][2].getPiece().move2(boardState, 2, 2);
+			Move newMove=mm.minimaxnaive(boardState, 2, 1);
+			//System.out.println(newMove);
+			//c=boardState[newMove.getOldX()][newMove.getOldY()];
+			//previous=c;
+			//c.setPiece(previous.getPiece());
+			//previous.removePiece();
+		
 			
 			didWhiteplayed=false;
 			whosTurn.setText("Turn : White Player");
 			
 			previous=null;
-
-		}
 		
+		}
 		
 		/*
-		if ( didWhiteplayed==true){
-			
-			
-			Move newMove=mm.minimaxnaive(boardState, 5);
-			System.out.println(newMove);
-			c=boardState[newMove.getOldX()][newMove.getOldY()];
-			previous=c;
-			c.setPiece(previous.getPiece());
-			previous.removePiece();
-		
-			
-			didWhiteplayed=false;
-			whosTurn.setText("Turn : White Player");
-			
-			previous=null;
-		
-		}
-		
-		
 		if ( didWhiteplayed==true){
 			
 			

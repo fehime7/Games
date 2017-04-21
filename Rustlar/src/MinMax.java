@@ -6,8 +6,8 @@ public class MinMax {
 	public Cell [][] board;
 	public Cell bestMove;
 	public Piece playingPiece;
-	private Cell [][] newBoard; 
-	private Move bestmove;
+	//public Cell [][] newBoard = new Cell [7][7]; 
+	//public Move bestmove=null;
 
 	
 	/**
@@ -19,14 +19,23 @@ public class MinMax {
 	
 	//coding after April
 	public Move minimaxnaive(Cell [][]b , int depth, int color ){
+		Move bestmove=null;
 		int bestscore;
 		//Move bestmove=null;
 		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
 		
+		Cell [][] newBoard = new Cell [7][7]; 
+		for(int i=0;i<7; i++){
+			for(int j=0; j<7; j++){
+				newBoard[i][j]=b[i][j];
+			}
+		}
+		
 
 		
 		if(depth==0 ){
-			bestscore=evaluate(b);
+			//bestscore=evaluate(b); // this is correct dont erase
+			bestscore=evalRand(b);
 		
 
 		}
@@ -42,15 +51,15 @@ public class MinMax {
 					System.out.println("The new board = "+newBoard);
 
 					move=minimaxnaive(newBoard, depth-1,0);
-					int score=evaluate(newBoard);
-					System.out.println("Score for evaluate new board = "+score);
+					int score=evalRand(newBoard);
+					System.out.println("Score for evaluate new board black = "+score);
 
 //					System.out.println(score);
 					if(score>bestscore){ //black maximizes its score
 						bestscore=score;
 						bestmove=move;
-						System.out.println("After cheking best move = "+bestmove);
-						System.exit(1);
+						System.out.println("After cheking best move black= "+bestmove);
+						//System.exit(1);
 					}
 				}
 				//return bestmove;
@@ -64,12 +73,12 @@ public class MinMax {
 					newBoard=doMove(b,move);
 					System.out.println("The new board = "+newBoard);
 					move=minimaxnaive(newBoard, depth-1,1);
-					int score=evaluate(newBoard);
-					System.out.println("Score for evaluate new board = "+score);
+					int score=evalRand(newBoard);
+					System.out.println("Score for evaluate new board white = "+score);
 					if(score<bestscore){ //white minimizes its score
 						bestscore=score;
 						bestmove=move;
-						System.out.println("After cheking best move = "+bestmove);
+						System.out.println("After cheking best move wtite= "+bestmove);
 						//System.exit(1);
 					}
 				}
@@ -87,14 +96,46 @@ public class MinMax {
 	
 	public Cell [][] doMove(Cell [][]oldBoard, Move moveToMake){
 		
+		Cell [][] minimaxBoard= new Cell [7][7];
+		
+		
+		for(int i=0;i<7; i++){
+			for(int j=0; j<7; j++){
+				minimaxBoard[i][j]=oldBoard[i][j];
+			}
+		}
+		
+		
 		if(oldBoard !=null ){
 
-			oldBoard[moveToMake.getNewX()][moveToMake.getNewY()].setPiece(moveToMake.getPiece());
-			oldBoard[moveToMake.getOldX()][moveToMake.getOldY()].removePiece();
+			minimaxBoard[moveToMake.getNewX()][moveToMake.getNewY()].setPiece(moveToMake.getPiece());
+			//minimaxBoard[moveToMake.getNewX()][moveToMake.getNewY()].getPiece().setPath("blackqueen.png");
+			minimaxBoard[moveToMake.getOldX()][moveToMake.getOldY()].removePiece();
 
 		}
 		
-		return oldBoard;
+		return minimaxBoard;
+	}
+	
+	public ArrayList<Move> findOnlyFirstMove(Cell [][]b){
+		Move result=null;
+		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
+
+		
+		for(int i = 0; i<1; i++){
+			for(int j=0; j<7; j++){
+				
+				if(b[i][j].getPiece() !=null){
+					
+					
+					moves.addAll(b[i][j].getPiece().move2(b, i, j));
+					break;
+						
+				}
+			}
+		}
+	
+		return moves;
 	}
 	
 	public ArrayList<Move> findAllLegalMoves(Cell [][]b ){
@@ -187,22 +228,6 @@ public class MinMax {
 	
 	}
 	
-	/*
-	public String doMove(Cell [][] b, Cell moveToMake){
-		final String[] columns = {"y0", "y1", "y2", "y3", "y4", "y5", "y6"}; //used to print the row as a letter instead of a number
-		Piece pieceToMove = moveToMake.getPiece();
-		
-		
-		//clear square and reset the new square with the piece to be moved
-		b.clearSquare(moveToMake.getOldX(), moveToMake.getOldY());
-		b.setSquare(moveToMake.getNewX(), moveToMake.getNewY(), pieceToMove);
-		pieceToMove.setLocation(moveToMake.getNewX(), moveToMake.getNewY());
-		
-		
-		String text = pieceToMove.getType() + " was moved to: " + columns[moveToMake.getNewX()] +  (moveToMake.getNewY()+1) + "\n";
-		return text;
-	}
-     */
 	
 	
 	/**
@@ -349,6 +374,12 @@ public class MinMax {
 		//System.out.println(whitescore);
 		//System.out.println(blackscore);
 		return blackscore-whitescore; //returns blackscore-whitescore, black player tries to maximize, white player tries to minimize
+	}
+	
+	public int evalRand(Cell [][] b){
+		Random r=new Random();
+		int x=r.nextInt(10000);
+		return x;
 	}
 	
 	}	

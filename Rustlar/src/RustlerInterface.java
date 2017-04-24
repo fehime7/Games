@@ -262,6 +262,7 @@ public class RustlerInterface extends JFrame implements MouseListener{
 					previous.removePiece();
 					didWhiteplayed=true;
 					whosTurn.setText("Turn : Black Player");
+					//c.getPiece().howManyTouchingPiece(c, boardState);
 					
 				}
 				
@@ -315,6 +316,7 @@ public class RustlerInterface extends JFrame implements MouseListener{
 			
 			c=randomPlayer.makeRandomMove();
 			
+			
 			c.setPiece(previous.getPiece());
 			previous.removePiece();
 			previous.deselect();
@@ -322,6 +324,8 @@ public class RustlerInterface extends JFrame implements MouseListener{
 			destinationlist.clear();
 			
 			randomPlayer.clearLists();
+			
+			//boardState[4][4].removePiece();
 			
 			didWhiteplayed=false;
 			whosTurn.setText("Turn : White Player");

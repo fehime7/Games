@@ -1,6 +1,7 @@
 
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -140,6 +141,25 @@ public class Cell extends JPanel implements Cloneable{
 		return yPoz;
 	}
 	
+	public int howManyTouching(Cell [][]b){
+		int result=0;
+		
+		ArrayList<Cell> neighbours= new ArrayList<>();
+		 
+		neighbours=getPiece().move(b, xPoz, yPoz);
+		 
+		 System.out.println("neighbours list"+neighbours);
+		 
+		 for(int i=0; i<neighbours.size(); i++){
+			 if(neighbours.get(i).getPiece()!=null && neighbours.get(i).getPiece().getColor()==getPiece().getColor()){
+				 result++;
+			 }
+		 }
+		
+		System.out.println("touching piece number = " +result);
+		return result;
+	}
+	
 	/*
 	public void setcheck()     //Function to highlight the current cell as checked (For King)
 	{
@@ -162,5 +182,6 @@ public class Cell extends JPanel implements Cloneable{
 		return ischeck;
 	}
 	*/
+	
 }
 

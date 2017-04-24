@@ -8,6 +8,8 @@ public class MinMax {
 	public Piece playingPiece;
 	//public Cell [][] newBoard = new Cell [7][7]; 
 	//public Move bestmove=null;
+	public Cell cellToclean=null;
+	public Move bestmove;
 
 	
 	/**
@@ -18,101 +20,127 @@ public class MinMax {
 	 */
 	
 	//coding after April
-	public Move minimaxnaive(Cell [][]b , int depth, int color ){
-		Move bestmove=null;
-		int bestscore;
-		//Move bestmove=null;
+	
+	public Cell takeNewCellFromScore(Cell [][] b){
+		
+		int x=bestmove.getNewX();
+		int y=bestmove.getNewY();
+		
+		
+		return b[x][y];		
+	}
+	
+	public Cell takeOldCellFromScore(Cell [][] b){
+		int score=minimaxnaive(b, 1, 1);
+		int x=bestmove.getOldX();
+		int y=bestmove.getOldY();
+		
+		
+		
+		return b[x][y];		
+	}
+	
+	
+	
+	public int minimaxnaive(Cell [][]b , int depth, int color ){
+		
+		int bestscore=0;
+		
 		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
 		
 		Cell [][] newBoard = new Cell [7][7]; 
 		for(int i=0;i<7; i++){
 			for(int j=0; j<7; j++){
-				newBoard[i][j]=b[i][j];
+				newBoard[i][j]=null;
 			}
 		}
 		
 
 		
 		if(depth==0 ){
-			//bestscore=evaluate(b); // this is correct dont erase
-			bestscore=evalRand(b);
-		
+			bestscore=newEvaluate(b); // this is correct dont erase
+			//bestscore=evaluate(b);
+		    return bestscore;
 
 		}
 		else{
 			if(color==1){ //max player so black player in my game
-				bestscore=Integer.MIN_VALUE;
+				int score=Integer.MIN_VALUE;
 				moves=findAllLegalMoves(b);
 				System.out.println(moves.size());
 				//System.exit(1);
 				for(Move move : moves){
-					System.out.println("move in max  "+move);
+					System.out.println("move in max  "+ move);
 					newBoard=doMove(b,move);
-					System.out.println("The new board = "+newBoard);
+					
+					printBoard(newBoard);
 
-					move=minimaxnaive(newBoard, depth-1,0);
-					int score=evalRand(newBoard);
+					bestscore=minimaxnaive(newBoard, depth-1, 0);
+					//int score=evaluate(newBoard);
 					System.out.println("Score for evaluate new board black = "+score);
 
 //					System.out.println(score);
-					if(score>bestscore){ //black maximizes its score
-						bestscore=score;
+					if(bestscore>score){ //black maximizes its score
+						score=bestscore;
 						bestmove=move;
-						System.out.println("After cheking best move black= "+bestmove);
+						System.out.println("After cheking best score black= "+score);
 						//System.exit(1);
 					}
 				}
-				//return bestmove;
+				return bestscore;
 				
 			}
 			else{//min player so white player in my game
-				bestscore=Integer.MAX_VALUE;
+				int score=Integer.MAX_VALUE;
 				moves=findAllLegalMoves(b);
 				for(Move move : moves){
 					System.out.println("move in min  "+move);
 					newBoard=doMove(b,move);
-					System.out.println("The new board = "+newBoard);
-					move=minimaxnaive(newBoard, depth-1,1);
-					int score=evalRand(newBoard);
+//					System.out.println("The new board = "+newBoard);
+					printBoard(newBoard);
+					bestscore=minimaxnaive(newBoard, depth-1,1);
+					//int score=evaluate(newBoard);
 					System.out.println("Score for evaluate new board white = "+score);
-					if(score<bestscore){ //white minimizes its score
-						bestscore=score;
+					if(score>bestscore){ //white minimizes its score
+						score=bestscore;
 						bestmove=move;
-						System.out.println("After cheking best move wtite= "+bestmove);
+						System.out.println("After cheking min score white= "+ score);
 						//System.exit(1);
+						//return bestmove2;
 					}
 				}
-				//return bestmove;
+				return bestscore;
+
 
 				
 			}
 			
 		}
-		//System.out.println(moves.size());
-		return bestmove;
-
 		
 	}
+	
+	
 	
 	public Cell [][] doMove(Cell [][]oldBoard, Move moveToMake){
 		
 		Cell [][] minimaxBoard= new Cell [7][7];
 		
+		Cell cell;
+		Piece pi;
 		
 		for(int i=0;i<7; i++){
 			for(int j=0; j<7; j++){
-				minimaxBoard[i][j]=oldBoard[i][j];
+				pi=null;
+				if(i==moveToMake.getNewX() && j==moveToMake.getNewY())
+					pi=moveToMake.getPiece();
+				else if(i!=moveToMake.getOldX() && j!= moveToMake.getOldY() && oldBoard[i][j].getPiece()!=null )
+					pi=oldBoard[i][j].getPiece();
+				
+				cell = new Cell(i, j, pi);
+				minimaxBoard[i][j]=cell;
 			}
 		}
 		
-		
-		if(oldBoard !=null ){
-
-			minimaxBoard[moveToMake.getNewX()][moveToMake.getNewY()].setPiece(moveToMake.getPiece());
-			//minimaxBoard[moveToMake.getNewX()][moveToMake.getNewY()].getPiece().setPath("blackqueen.png");
-			minimaxBoard[moveToMake.getOldX()][moveToMake.getOldY()].removePiece();
-
-		}
 		
 		return minimaxBoard;
 	}
@@ -380,6 +408,52 @@ public class MinMax {
 		Random r=new Random();
 		int x=r.nextInt(10000);
 		return x;
+	}
+	
+	public int newEvaluate(Cell [][]b){
+		int score = 0;
+		
+		
+		for(int i=0; i<7 ; i++){
+			for(int j=0 ; j<7 ; j++){
+				
+			if(b[i][j].getPiece()!=null && b[i][j].getPiece().getColor()==1){
+				int numoftouchingpiece=b[i][j].howManyTouching(b);
+				if(numoftouchingpiece==1)
+					score+=40;
+				else if(numoftouchingpiece==2)
+					score+=90;
+				else if(numoftouchingpiece==3)
+					score+=160;
+				else if(numoftouchingpiece==4)
+					score+=250;
+				else 
+					score+=10;
+			}	
+			else if(b[i][j].getPiece()!=null && b[i][j].getPiece().getColor()==0)
+					score=-100;
+				
+				
+			}
+		}
+		
+		return score;
+		
+	}
+	
+	public void printBoard(Cell [][] b){
+		
+		for(int i=0; i<7; i++){
+			for(int j=0; j<7; j++){	
+				if(b[i][j].getPiece()!=null)
+					System.out.print("  pp  "+b[i][j].getPiece().getId());
+				else
+					System.out.print("  pp null");
+			}
+		}
+		System.out.println(" ");
+		
+		
 	}
 	
 	}	

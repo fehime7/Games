@@ -230,4 +230,27 @@ public abstract class Piece implements Cloneable{
 		 return result;
 	}
 	
+	public int howManyTouchingPiece(Cell c, Cell [][] b){
+		
+		 int result=0;
+		 int color=c.getPiece().getColor();
+		 int x=c.getXPoz();
+		 int y=c.getYPoz();
+		 
+		 ArrayList<Cell> neighbours= new ArrayList<>();
+		 
+		 neighbours.addAll(c.getPiece().move(b, x, y));
+		 
+		 System.out.println("neighbours list"+neighbours);
+		 
+		 for(int i=0; i<neighbours.size(); i++){
+			 if(neighbours.get(i).getPiece()!=null && neighbours.get(i).getPiece().getColor()==color){
+				 result++;
+			 }
+		 }
+		
+		System.out.println("touching piece number = " +result);
+		return result;
+	}
+	
 }

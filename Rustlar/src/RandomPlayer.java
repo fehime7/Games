@@ -12,31 +12,6 @@ public class RandomPlayer  {
 	public Cell randomSelectedCell , randomMove;
 	Thread t;
 	
-	/*
-	public void getBoard(Cell board[][]){
-		
-		for(int i = 0; i<7; i++){
-			for(int j=0; j<7; j++){
-				if(board[i][j]!=null){
-					if(board[i][j].getPiece().getColor() == 0){ //case that piece is white
-						if(board[i][j].getPiece() instanceof Rider){
-							board[i][j] = new Cell(i, j, new Rider("WR1", "White_Pawn.png", 0));
-						}else if(board[i][j].getPiece() instanceof Horse){
-							board[i][j] = new Cell(i, j, new Horse("WH", "White_Horse.png", 0));
-						}
-					}else{ //case that piece is black
-						if(board[i][j].getPiece() instanceof Rider){
-							board[i][j] = new Cell(i, j, new Rider("BR1", "Black_Pawn.png", 1));
-						}else if(board[i][j].getPiece() instanceof Horse){
-							board[i][j] = new Cell(i, j, new Horse("BH", "Black_Horse.png", 1));
-						}
-					}
-				}
-			}
-		}
-		
-	}
-	*/
 	
 	public boolean isMovable(Cell c, Cell [][] state){
 		 boolean result=true;

@@ -238,13 +238,21 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 		if ( didWhiteplayed==true && isfinished==false){
 			
 			
-			//boardState[2][2].getPiece().move2(boardState, 2, 2);
-			Move newMove=mm.minimaxnaive(boardState, 2, 1);
-			//System.out.println(newMove);
-			//c=boardState[newMove.getOldX()][newMove.getOldY()];
-			//previous=c;
-			//c.setPiece(previous.getPiece());
-			//previous.removePiece();
+			c=mm.takeOldCellFromScore(boardState);
+			c.select();
+			highlightDestinations(c.getPiece().move(boardState, c.getXPoz(), c.getYPoz()));
+			destinationlist=c.getPiece().move(boardState, c.getXPoz(), c.getYPoz());
+			previous=c;
+			
+			c=mm.takeNewCellFromScore(boardState);
+			
+			c.setPiece(previous.getPiece());
+			previous.removePiece();
+			
+			previous.deselect();
+			cleanDestinations(destinationlist);
+			destinationlist.clear();
+
 		
 			
 			didWhiteplayed=false;
@@ -254,24 +262,6 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 		
 		}
 		
-		/*
-		if ( didWhiteplayed==true){
-			
-			
-			mm2.makeMove(boardState);
-			//mm.evaluate(boardState);
-			//previous=c;
-			//c.setPiece(previous.getPiece());
-			//previous.removePiece();
-		
-			
-			didWhiteplayed=false;
-			whosTurn.setText("Turn : White Player");
-			
-			previous=null;
-		
-		}
-		*/
 		
 		
 	}

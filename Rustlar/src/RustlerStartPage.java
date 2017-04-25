@@ -8,7 +8,7 @@ import javax.swing.*;
 public class RustlerStartPage extends JFrame{
 	
 	JLabel firstPlayer, secondPlayer;
-	JRadioButton humanPlayer1, computerPlayerRandom, computerPlayerMinmax, humanPlayer2;
+	JRadioButton humanPlayer1, computerPlayerRandom, computerPlayerMinmax, humanPlayer2, computerRandomPlayer1;
 	ButtonGroup group1, group2;
 	JButton goButton;
 	Player whitePlayer, blackPlayer;
@@ -35,6 +35,11 @@ public class RustlerStartPage extends JFrame{
 		humanPlayer1.setSize(150, 30);
 		humanPlayer1.setLocation(60, 110);
 		
+
+		computerRandomPlayer1= new JRadioButton("Random Player:");
+		computerRandomPlayer1.setSize(150, 30);
+		computerRandomPlayer1.setLocation(60, 80);
+		
 		computerPlayerRandom= new JRadioButton("Random Player:");
 		computerPlayerRandom.setSize(150, 30);
 		computerPlayerRandom.setLocation(250, 80);
@@ -51,6 +56,10 @@ public class RustlerStartPage extends JFrame{
 		group1.add(computerPlayerRandom);
 		group1.add(computerPlayerMinmax);
 		group1.add(humanPlayer2);
+		
+		group2=new ButtonGroup();
+		group2.add(humanPlayer1);
+		group2.add(computerRandomPlayer1);
 		
 		goButton= new JButton("START");
 		goButton.setSize(100, 50);
@@ -73,11 +82,16 @@ public class RustlerStartPage extends JFrame{
 					new RustlerInterfaceMiniMax();
 					//whichComputerPlayer=true;
 				}
+				else if(computerRandomPlayer1.isSelected() && computerPlayerMinmax.isSelected()){
+				new RustlerInterfaceAIvsAI();
+				//whichComputerPlayer=true;
+			}
+		
 			
 				else {
 					Object [] arr={"Close"};
 					
-					int n=JOptionPane.showOptionDialog(null, "Select one option for each player", "Rustlar",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE,null, arr, arr[0]); 
+					int n=JOptionPane.showOptionDialog(null, "Select one option for each player", "Rustler",JOptionPane.CLOSED_OPTION, JOptionPane.INFORMATION_MESSAGE,null, arr, arr[0]); 
 				}
 				
 				/*
@@ -108,6 +122,7 @@ public class RustlerStartPage extends JFrame{
 		add(firstPlayer);
 		add(secondPlayer);
 		add(humanPlayer1);
+		add(computerRandomPlayer1);
 		add(computerPlayerRandom);
 		add(computerPlayerMinmax);
 		add(humanPlayer2);

@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -13,7 +15,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
-public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
+public class RustlerInterfaceAIvsAI extends JFrame implements MouseListener{
 	
 	static Rider br1,br2,br3,br4, wr1, wr2, wr3,wr4;
 	static Horse bh, wh;
@@ -33,21 +35,23 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 	MinMax mm=new MinMax();
 	MinMaxTwo mm2=new MinMaxTwo();
 	Thread t;
+	JButton start;
+	
 	
 	public static void main(String[] args) {
    
 		
-		RustlerInterfaceMiniMax rustler=new RustlerInterfaceMiniMax();
+		RustlerInterfaceAIvsAI rustler=new RustlerInterfaceAIvsAI();
 	
 	}		
 	
-	public RustlerInterfaceMiniMax(){
+	public RustlerInterfaceAIvsAI(){
 		
 		
 		setSize(900,650);
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Rustler Game - Minimax vs. Human");
+		setTitle("Rustler Game - Random vs. Minimax");
 
 		
 		
@@ -97,22 +101,101 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 					P=wh;
 				 
 				cell=new Cell(i,j,P);
-				cell.addMouseListener(this);
+				//cell.addMouseListener(this);
 				board.add(cell);
 				boardState[i][j]=cell;
 			}
 		
-		player1= new JLabel("Player 1: Human Player - White");
+		player1= new JLabel("Player 1: MinMax Player - White");
 		player1.setLocation(650, 50);
 		player1.setSize(200, 50);
 		
-		player2= new JLabel("Player 2: MinMax Player - Black");
-		player2.setLocation(650, 450);
+		player2= new JLabel("Player 2: Random Player - Black");
+		player2.setLocation(650, 550);
 		player2.setSize(200, 50);
 		
-		minimaxBestScore= new JLabel("Best score for the move: ");
-		minimaxBestScore.setLocation(650, 550);
-		minimaxBestScore.setSize(200, 50);
+		start=new JButton("PLAY");
+		start.setLocation(650, 350);
+		start.setSize(100, 50);
+		start.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				if(previous==null && isfinished==false){
+					if (didWhiteplayed==true) {
+						randomPlayer.findAllBlacks(boardState); //This is necessary to have a black piece list for next methods
+						destinationlist=randomPlayer.highLightRandomMoves(boardState);
+						c=randomPlayer.randomSelectedCell;
+						previous=c;
+						c.select();
+				
+						highlightDestinations(destinationlist);
+						
+						
+						c=randomPlayer.makeRandomMove();
+						
+						
+						c.setPiece(previous.getPiece());
+						previous.removePiece();
+						previous.deselect();
+						cleanDestinations(destinationlist);
+						destinationlist.clear();
+						
+						randomPlayer.clearLists();
+						
+						//boardState[4][4].removePiece();
+						
+						didWhiteplayed=false;
+						whosTurn.setText("Turn : White Player");
+						
+						previous=null;
+					
+					
+					}else {
+						c=mm.takeOldCellFromScore(boardState);
+						c.select();
+						highlightDestinations(c.getPiece().move(boardState, c.getXPoz(), c.getYPoz()));
+						destinationlist=c.getPiece().move(boardState, c.getXPoz(), c.getYPoz());
+						previous=c;
+						
+						c=mm.takeNewCellFromScore(boardState);
+						
+						c.setPiece(previous.getPiece());
+						previous.removePiece();
+						
+						previous.deselect();
+						cleanDestinations(destinationlist);
+						destinationlist.clear();
+						
+						
+
+					
+						
+						didWhiteplayed=true;
+						whosTurn.setText("Turn : Black Player");
+						
+						previous=null;
+					}
+					
+				}else if(wh.isSurrounded(boardState, 0)==true || numberofridersleft(boardState, 0)<2) {
+					JOptionPane.showMessageDialog(null, "Game is finished.The winner is black player!!!");
+					System.out.println("isSurrounded works correct");
+					isfinished=true;
+					
+
+				}
+				else if(bh.isSurrounded(boardState, 1) || numberofridersleft(boardState, 1)<2){
+					JOptionPane.showMessageDialog(null, "Game is finished.The winner is white player!!!");
+					System.out.println("isSurrounded works correct");  
+					isfinished=true;
+
+				}
+				
+						
+			}
+		});
 		
 		whosTurn= new JLabel("Turn : White Player");
 		whosTurn.setLocation(650, 250);
@@ -122,7 +205,7 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 		add(board);
 		add(player1);
 		add(player2);
-		add(minimaxBestScore);
+		add(start);
 		add(whosTurn);
 		setVisible(true);
 	}
@@ -254,8 +337,7 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 		else if ( didWhiteplayed==true && isfinished==false){
 			
 			
-			//c=mm.takeOldCellFromScore(boardState);
-			c=mm.takeOldCellFromScoreForWhite(boardState);
+			c=mm.takeOldCellFromScore(boardState);
 			c.select();
 			highlightDestinations(c.getPiece().move(boardState, c.getXPoz(), c.getYPoz()));
 			destinationlist=c.getPiece().move(boardState, c.getXPoz(), c.getYPoz());
@@ -311,4 +393,5 @@ public class RustlerInterfaceMiniMax extends JFrame implements MouseListener{
 	}
 
 }
+
 

@@ -36,6 +36,11 @@
 			<locationURI>PARENT-3-PROJECT_LOC/Desktop/7th%20Semester%20Material/Black_Pawn.png</locationURI>
 		</link>
 		<link>
+			<name>src/FS.jpg</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Desktop/benimkiler/FS.jpg</locationURI>
+		</link>
+		<link>
 			<name>src/White_Horse.png</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/Desktop/7th%20Semester%20Material/White_Horse.png</locationURI>
@@ -44,6 +49,11 @@
 			<name>src/White_Pawn.png</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/Desktop/7th%20Semester%20Material/White_Pawn.png</locationURI>
+		</link>
+		<link>
+			<name>src/blackqueen.png</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/Desktop/ChessAI-master/blackqueen.png</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>

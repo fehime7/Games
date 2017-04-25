@@ -141,14 +141,15 @@ public class Cell extends JPanel implements Cloneable{
 		return yPoz;
 	}
 	
-	public int howManyTouching(Cell [][]b){
+	public int howManyTouching(Cell [][]b ){
+		
 		int result=0;
 		
 		ArrayList<Cell> neighbours= new ArrayList<>();
 		 
-		neighbours=getPiece().move(b, xPoz, yPoz);
+		neighbours=getPiece().findNeighbours(b, xPoz, yPoz);
 		 
-		 System.out.println("neighbours list"+neighbours);
+		 //System.out.println("neighbours list"+neighbours);
 		 
 		 for(int i=0; i<neighbours.size(); i++){
 			 if(neighbours.get(i).getPiece()!=null && neighbours.get(i).getPiece().getColor()==getPiece().getColor()){
@@ -156,7 +157,7 @@ public class Cell extends JPanel implements Cloneable{
 			 }
 		 }
 		
-		System.out.println("touching piece number = " +result);
+		//System.out.println("touching piece number = " +result);
 		return result;
 	}
 	

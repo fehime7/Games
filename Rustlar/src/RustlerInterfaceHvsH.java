@@ -147,6 +147,19 @@ public class RustlerInterfaceHvsH extends JFrame implements MouseListener{
 	    	while(it.hasNext())
 	    		it.next().setPossibleDestination();
 	    }
+	    
+	    public int numberofridersleft(Cell [][] b, int color){
+		  	  int total=0;
+		  	  
+		  	  for (int i = 0; i < 7; i++) {
+		  		  for (int j = 0; j < 7; j++) {
+		  			  if(b[i][j].getPiece()!=null && b[i][j].getPiece() instanceof Rider && b[i][j].getPiece().getColor()==color)
+		  				  total++;
+		  			
+		  		}	
+		  	}	  
+		  	  return total;
+		    }
 	
 	
 
@@ -221,14 +234,14 @@ public class RustlerInterfaceHvsH extends JFrame implements MouseListener{
 			}
 			highlightDestinations(destinationlist);
 		}
-		if(wh.isSurrounded(boardState, 0)==true){
+		if(wh.isSurrounded(boardState, 0) || numberofridersleft(boardState, 0)<2){
 			JOptionPane.showMessageDialog(null, "Game is finished.The winner is black player!!!");
 			System.out.println("isSurrounded works correct");
 			isfinished=true;
 			
 
 		}
-		else if(bh.isSurrounded(boardState, 1)){
+		else if(bh.isSurrounded(boardState, 1) || numberofridersleft(boardState, 1)<2){
 			JOptionPane.showMessageDialog(null, "Game is finished.The winner is white player!!!");
 			System.out.println("isSurrounded works correct");  
 			isfinished=true;

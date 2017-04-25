@@ -79,7 +79,7 @@ public class Rider extends Piece {
 				if(state[x][y+1].getPiece()==null) 
 					possibleMoves.add(state[x][y+1]);
 				if(state[x+1][y].getPiece()==null)
-					possibleMoves.add(state[x+1][y]);	
+					possibleMoves.add(state[x+1][y]);
 							
 			}
 			else if((x==0 && y==3) || (x==2 && y==1) || (x==2 && y==5)){ // Position 0,3 - 2,1 - 2,5
@@ -89,6 +89,8 @@ public class Rider extends Piece {
 					possibleMoves.add(state[x][y+1]);
 				if(state[x][y-1].getPiece()==null)	
 					possibleMoves.add(state[x][y-1]);
+				
+				
 			}
 			else if((x==0 && y==4) || (x==2 && y==6)){ // Position 0,4 - 2,6
 				if(state[x][y-1].getPiece()==null) 

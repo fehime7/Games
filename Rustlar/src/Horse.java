@@ -238,82 +238,82 @@ public class Horse extends Piece {
 					possibleMoves2.clear();
 				
 				else if((x==0 && y==2) || (x==2 && y==0)){ // Position 0,2 - 2,0
-					if(state[x][y+1].getPiece()==null) 
+					if(state[x][y+1].getPiece()==null || isAlone(state[x][y+1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y+1, (state[x][y]).getPiece()));
-					if(state[x+1][y].getPiece()==null)
+					if(state[x+1][y].getPiece()==null || isAlone(state[x+1][y], state))
 						possibleMoves2.add(new Move(x, y, x+1, y, (state[x][y]).getPiece()));
 								
 				}
 				else if((x==0 && y==3) || (x==2 && y==1) || (x==2 && y==5)){ // Position 0,3 - 2,1 - 2,5
-					if(state[x+1][y].getPiece()==null)
+					if(state[x+1][y].getPiece()==null || isAlone(state[x+1][y], state))
 						possibleMoves2.add(new Move(x, y, x+1, y, (state[x][y]).getPiece()));
-					if(state[x][y+1].getPiece()==null) 
+					if(state[x][y+1].getPiece()==null || isAlone(state[x][y+1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y+1, (state[x][y]).getPiece()));
-					if(state[x][y-1].getPiece()==null)	
+					if(state[x][y-1].getPiece()==null || isAlone(state[x][y-1], state))	
 						possibleMoves2.add(new Move(x, y, x, y-1, (state[x][y]).getPiece()));
 				}
 				else if((x==0 && y==4) || (x==2 && y==6)){ // Position 0,4 - 2,6
-					if(state[x][y-1].getPiece()==null){ 
+					if(state[x][y-1].getPiece()==null || isAlone(state[x][y-1], state)){ 
 						possibleMoves2.add(new Move(x, y, x, y-1, (state[x][y]).getPiece()));
 					}
-					if(state[x+1][y].getPiece()==null)
+					if(state[x+1][y].getPiece()==null || isAlone(state[x+1][y], state))
 						possibleMoves2.add(new Move(x, y, x+1, y, (state[x][y]).getPiece()));
 					
 				}
 				
 				else if((x==1 && y==2) || (x==3 && y==0) || (x==5 && y==2)){ // Position 1,2 - 3,0 - 5,2
-					if(state[x-1][y].getPiece()==null)
+					if(state[x-1][y].getPiece()==null || isAlone(state[x-1][y], state))
 						possibleMoves2.add(new Move(x, y, x-1, y, (state[x][y]).getPiece()));
-					if(state[x][y+1].getPiece()==null) 
+					if(state[x][y+1].getPiece()==null || isAlone(state[x][y+1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y+1, (state[x][y]).getPiece()));
-					if(state[x+1][y].getPiece()==null)	
+					if(state[x+1][y].getPiece()==null || isAlone(state[x+1][y], state))	
 						possibleMoves2.add(new Move(x, y, x+1, y, (state[x][y]).getPiece()));
 					
 				}
 				
 				else if((x==1 && y==4) || (x==3 && y==6) || (x==5 && y==4)){ // Position 1,4 - 3,6 - 5,4
-					if(state[x-1][y].getPiece()==null)
+					if(state[x-1][y].getPiece()==null || isAlone(state[x-1][y], state))
 						possibleMoves2.add(new Move(x, y, x-1, y, (state[x][y]).getPiece()));
-					if(state[x+1][y].getPiece()==null)
+					if(state[x+1][y].getPiece()==null || isAlone(state[x+1][y], state))
 						possibleMoves2.add(new Move(x, y, x+1, y, (state[x][y]).getPiece()));
-					if(state[x][y-1].getPiece()==null)
+					if(state[x][y-1].getPiece()==null || isAlone(state[x][y-1], state))
 						possibleMoves2.add(new Move(x, y, x, y-1, (state[x][y]).getPiece()));
 						 				
 				}
 				
 				else if((x==4 && y==0) || (x==6 && y==2)){ // Position 4,0 - 6,2
-					if((state[x-1][y].getPiece()==null))
+					if((state[x-1][y].getPiece()==null) || isAlone(state[x-1][y], state))
 						possibleMoves2.add(new Move(x, y, x-1, y, (state[x][y]).getPiece()));
-					if((state[x][y+1].getPiece()==null))
+					if((state[x][y+1].getPiece()==null) || isAlone(state[x][y+1], state))
 						possibleMoves2.add(new Move(x, y, x, y+1, (state[x][y]).getPiece()));
 						
 				}
 				
 				else if((x==4 && y==1) || (x==6 && y==3) || (x==4 && y==5)){ // Position 4,1- 4,5 - 6,3
 					
-					if((state[x][y+1].getPiece()==null)) 
+					if((state[x][y+1].getPiece()==null) || isAlone(state[x][y+1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y+1, (state[x][y]).getPiece()));
-					if((state[x-1][y].getPiece()==null))
+					if((state[x-1][y].getPiece()==null) || isAlone(state[x-1][y], state))
 						possibleMoves2.add(new Move(x, y, x-1, y, (state[x][y]).getPiece()));
-					if((state[x][y-1].getPiece()==null))
+					if((state[x][y-1].getPiece()==null) || isAlone(state[x][y-1], state))
 						possibleMoves2.add(new Move(x, y, x, y-1, (state[x][y]).getPiece()));
 					
 				}
 				else if((x==4 && y==6) || (x==6 && y==4)){ // Position 4,6 - 6,4
-					if((state[x][y-1].getPiece()==null)) 
+					if((state[x][y-1].getPiece()==null) || isAlone(state[x][y-1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y-1, (state[x][y]).getPiece()));
-					if ((state[x-1][y].getPiece()==null))
+					if ((state[x-1][y].getPiece()==null) || isAlone(state[x-1][y], state))
 						possibleMoves2.add(new Move(x, y, x-1, y, (state[x][y]).getPiece()));
 					
 				}
 				else { //middle positions
-					if(state[x-1][y].getPiece()==null)
+					if(state[x-1][y].getPiece()==null || isAlone(state[x-1][y], state))
 						possibleMoves2.add(new Move(x, y, x-1, y, (state[x][y]).getPiece()));
-					if(state[x][y+1].getPiece()==null) 
+					if(state[x][y+1].getPiece()==null || isAlone(state[x][y+1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y+1, (state[x][y]).getPiece()));
-					if(state[x][y-1].getPiece()==null) 
+					if(state[x][y-1].getPiece()==null || isAlone(state[x][y-1], state)) 
 						possibleMoves2.add(new Move(x, y, x, y-1, (state[x][y]).getPiece()));
-					if(state[x+1][y].getPiece()==null)
+					if(state[x+1][y].getPiece()==null || isAlone(state[x+1][y], state))
 						possibleMoves2.add(new Move(x, y, x+1, y, (state[x][y]).getPiece()));
 									
 				}	
@@ -322,6 +322,32 @@ public class Horse extends Piece {
 			
 			return possibleMoves2;
 		}
+	 
+	 public boolean canEat(Cell [][]b , Cell c){ //shows if piece 
+		 
+		 int howmany=0;
+		 
+		 ArrayList<Cell> eatables= new ArrayList<>();
+		 
+		 eatables=move(b, c.getXPoz(), c.getYPoz());
+		 
+		 for (int i = 0; i < eatables.size(); i++) {
+			if (eatables.get(i).getPiece()!=null && eatables.get(i).getPiece().getColor()!=c.getPiece().getColor()) {
+				howmany++;
+			}
+		}
+		 if (howmany>0) {
+			 return true;
+			
+		}
+		 
+		 return false;
+		 
+	 }
+	 
+	 public boolean didEat(Cell [][]b, Cell c){
+		 return false;
+	 }
 	 
 	 
    

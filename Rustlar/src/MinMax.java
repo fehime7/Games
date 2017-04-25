@@ -26,12 +26,12 @@ public class MinMax {
 		int x=bestmove.getNewX();
 		int y=bestmove.getNewY();
 		
-		
+		System.out.println("THE BEST MOVE IN THE END"+bestmove);
 		return b[x][y];		
 	}
 	
 	public Cell takeOldCellFromScore(Cell [][] b){
-		int score=minimaxnaive(b, 1, 1);
+		int score=minimaxnaive(b, 2, 1);
 		int x=bestmove.getOldX();
 		int y=bestmove.getOldY();
 		
@@ -59,14 +59,14 @@ public class MinMax {
 		
 		if(depth==0 ){
 			bestscore=newEvaluate(b); // this is correct dont erase
-			//bestscore=evaluate(b);
+			//bestscore=evalRand(b);
 		    return bestscore;
 
 		}
 		else{
 			if(color==1){ //max player so black player in my game
 				int score=Integer.MIN_VALUE;
-				moves=findAllLegalMoves(b);
+				moves=findAllLegalMoves(b,1);
 				System.out.println(moves.size());
 				//System.exit(1);
 				for(Move move : moves){
@@ -82,6 +82,7 @@ public class MinMax {
 //					System.out.println(score);
 					if(bestscore>score){ //black maximizes its score
 						score=bestscore;
+						//if(move.getPiece().getColor()==0)
 						bestmove=move;
 						System.out.println("After cheking best score black= "+score);
 						//System.exit(1);
@@ -92,7 +93,7 @@ public class MinMax {
 			}
 			else{//min player so white player in my game
 				int score=Integer.MAX_VALUE;
-				moves=findAllLegalMoves(b);
+				moves=findAllLegalMoves(b,0);
 				for(Move move : moves){
 					System.out.println("move in min  "+move);
 					newBoard=doMove(b,move);
@@ -103,12 +104,14 @@ public class MinMax {
 					System.out.println("Score for evaluate new board white = "+score);
 					if(score>bestscore){ //white minimizes its score
 						score=bestscore;
+						//if(move.getPiece().getColor()==1)
 						bestmove=move;
 						System.out.println("After cheking min score white= "+ score);
 						//System.exit(1);
 						//return bestmove2;
 					}
 				}
+				
 				return bestscore;
 
 
@@ -118,6 +121,96 @@ public class MinMax {
 		}
 		
 	}
+	
+public int minimaxnaiveforwhite(Cell [][]b , int depth, int color ){
+		
+		int bestscore=0;
+		
+		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
+		
+		Cell [][] newBoard = new Cell [7][7]; 
+		for(int i=0;i<7; i++){
+			for(int j=0; j<7; j++){
+				newBoard[i][j]=null;
+			}
+		}
+		
+
+		
+		if(depth==0 ){
+			bestscore=newEvaluate(b); // this is correct dont erase
+			//bestscore=evalRand(b);
+		    return bestscore;
+
+		}
+		else{
+			if(color==0){ //max player so white player in my game
+				int score=Integer.MAX_VALUE;
+				moves=findAllLegalMoves(b,0);
+				System.out.println(moves.size());
+				//System.exit(1);
+				for(Move move : moves){
+					System.out.println("move in max  "+ move);
+					newBoard=doMove(b,move);
+					
+					printBoard(newBoard);
+
+					bestscore=minimaxnaive(newBoard, depth-1, 1);
+					//int score=evaluate(newBoard);
+					System.out.println("Score for evaluate new board black = "+score);
+
+//					System.out.println(score);
+					if(bestscore<score){ //black maximizes its score
+						score=bestscore;
+						//if(move.getPiece().getColor()==0)
+						bestmove=move;
+						System.out.println("After cheking best score black= "+score);
+						//System.exit(1);
+					}
+				}
+				return bestscore;
+				
+			}
+			else{//min player so white player in my game
+				int score=Integer.MIN_VALUE;
+				moves=findAllLegalMoves(b,1);
+				for(Move move : moves){
+					System.out.println("move in min  "+move);
+					newBoard=doMove(b,move);
+//					System.out.println("The new board = "+newBoard);
+					printBoard(newBoard);
+					bestscore=minimaxnaive(newBoard, depth-1,0);
+					//int score=evaluate(newBoard);
+					System.out.println("Score for evaluate new board white = "+score);
+					if(score<bestscore){ //white minimizes its score
+						score=bestscore;
+						//if(move.getPiece().getColor()==1)
+						bestmove=move;
+						System.out.println("After cheking min score white= "+ score);
+						//System.exit(1);
+						//return bestmove2;
+					}
+				}
+				
+				return bestscore;
+
+
+				
+			}
+			
+		}
+		
+	}
+
+public Cell takeOldCellFromScoreForWhite(Cell [][] b){
+	int score=minimaxnaiveforwhite(b, 2, 0);
+	int x=bestmove.getOldX();
+	int y=bestmove.getOldY();
+	
+	
+	
+	return b[x][y];		
+}
 	
 	
 	
@@ -166,14 +259,14 @@ public class MinMax {
 		return moves;
 	}
 	
-	public ArrayList<Move> findAllLegalMoves(Cell [][]b ){
+	public ArrayList<Move> findAllLegalMoves(Cell [][]b , int color ){
 		
 		ArrayList<Move> moves  = new ArrayList<Move>(); //keeps track of all possible moves 
 		
 		for(int i = 0; i<7; i++){
 			for(int j=0; j<7; j++){
 				
-				if(b[i][j].getPiece() !=null){
+				if(b[i][j].getPiece() !=null && b[i][j].getPiece().getColor()==color){
 					
 					moves.addAll(b[i][j].getPiece().move2(b, i, j));
 						
@@ -181,8 +274,6 @@ public class MinMax {
 			}
 		}
 		
-		
-		//System.out.println(moves);
 		return moves;
 
 	}
@@ -419,27 +510,170 @@ public class MinMax {
 				
 			if(b[i][j].getPiece()!=null && b[i][j].getPiece().getColor()==1){
 				int numoftouchingpiece=b[i][j].howManyTouching(b);
-				if(numoftouchingpiece==1)
+				if(numoftouchingpiece==1) // checking touching 2 pieces
 					score+=40;
-				else if(numoftouchingpiece==2)
-					score+=90;
+				else if(numoftouchingpiece==2) // making them keep pairs
+					score+=900;
 				else if(numoftouchingpiece==3)
 					score+=160;
 				else if(numoftouchingpiece==4)
 					score+=250;
 				else 
 					score+=10;
+			
+			}
+			
+			
+			else if(b[i][j].getPiece()!=null && b[i][j].getPiece().getColor()==0){
+				int numoftouchingpiece=b[i][j].howManyTouching(b);
+				if(numoftouchingpiece==1)
+					score-=40;
+				else if(numoftouchingpiece==2)
+					score-=900;
+				else if(numoftouchingpiece==3)
+					score-=160;
+				else if(numoftouchingpiece==4)
+					score-=250;
+				else 
+					score-=10;
 			}	
-			else if(b[i][j].getPiece()!=null && b[i][j].getPiece().getColor()==0)
-					score=-100;
-				
+			
+			else if (b[i][j].getPiece()!=null && b[i][j].getPiece().getColor()==1 && b[i][j].getPiece().isinDanger(b[i][j], b)) {
+				score-=100000;
 				
 			}
+			else if(b[i][j].getPiece()!=null && b[i][j].getPiece() instanceof Horse){
+				
+				Horse horse= new Horse(b[i][j].getPiece().getId(),b[i][j].getPiece().getPath() , b[i][j].getPiece().getColor());
+				if(horse.canEat(b, b[i][j])){
+					score+=100000;
+				}
+			}
+			
+		}
 		}
 		
 		return score;
 		
 	}
+	
+	public int determinePriorities(Cell [][] b){
+		int score = 0;
+		
+		
+		
+		for(int i=0; i<7 ; i++){
+			for(int j=0 ; j<7 ; j++){
+				
+				
+				
+				
+			}
+		}
+		return score;
+		
+	}
+	
+public ArrayList<Cell> findAllBlacks(Cell [][] board){
+	
+	 ArrayList<Cell> blackPieces = new ArrayList<Cell>();
+
+		
+		for( int i=0 ; i<7 ; i++){
+			for( int j=0; j<7 ; j++ ){
+				if (board[i][j].getPiece() instanceof Rider && board[i][j].getPiece().getColor()==1 &&
+						(isMovable(board[i][j], board)==true)){
+					blackPieces.add(board[i][j]);
+				}
+				if (board[i][j].getPiece() instanceof Horse && board[i][j].getPiece().getColor()==1 &&
+						(isMovable(board[i][j], board)==true)){
+					blackPieces.add(board[i][j]);
+				}
+			}
+		}
+		
+		System.out.println("number of black pieces= " +blackPieces.size());
+		
+		return blackPieces;
+	}
+
+public boolean isMovable(Cell c, Cell [][] state){
+	 boolean result=true;
+	
+	 int x=c.getXPoz();
+	 int y=c.getYPoz();
+	 
+	    if(x<0 || y<0 || x>6 || y>6)
+			result=false;
+		
+		else if((x==0 && y==2) || (x==2 && y==0)){ // Position 0,2 - 2,0
+			if((state[x][y+1].getPiece() !=null) &&  
+			   (state[x+1][y].getPiece() !=null))
+				result=false;	
+						
+		}
+		else if((x==0 && y==3) || (x==2 && y==1) || (x==2 && y==5)){ // Position 0,3 - 2,1 - 2,5
+			if((state[x+1][y].getPiece() !=null) &&  
+			   (state[x][y+1].getPiece() !=null) &&
+			   (state[x][y-1].getPiece() !=null))
+				result=false;	
+								
+		}
+		else if((x==0 && y==4) || (x==2 && y==6)){ // Position 0,4 - 2,6
+			if((state[x][y-1].getPiece() !=null) &&  
+			   (state[x+1][y].getPiece() !=null))
+				result=false;	
+			
+		}
+		
+		else if((x==1 && y==2) || (x==3 && y==0) || (x==5 && y==2)){ // Position 1,2 - 3,0 - 5,2
+			if((state[x+1][y].getPiece() !=null) &&  
+			   (state[x][y+1].getPiece() !=null) &&
+			   (state[x-1][y].getPiece() !=null))
+				result=false;	
+			
+		}
+		
+		else if((x==1 && y==4) || (x==3 && y==6) || (x==5 && y==4)){ // Position 1,4 - 3,6 - 5,4
+			if((state[x+1][y].getPiece() !=null) &&  
+			   (state[x][y-1].getPiece() !=null) &&
+		       (state[x-1][y].getPiece() !=null))
+				result=false;	
+				 				
+		}
+		
+		else if((x==4 && y==0) || (x==6 && y==2)){ // Position 4,0 - 6,2
+			if((state[x][y+1].getPiece() !=null) &&  
+			   (state[x-1][y].getPiece() !=null))
+				result=false;	
+				
+		}
+		
+		else if((x==4 && y==1) || (x==6 && y==3) || (x==4 && y==5)){ // Position 4,1- 4,5 - 6,3
+			if((state[x][y-1].getPiece() !=null) &&  
+			   (state[x][y+1].getPiece() !=null) &&
+			   (state[x-1][y].getPiece() !=null))
+				result=false;		      
+			
+		}
+		else if((x==4 && y==6) || (x==6 && y==4)){ // Position 4,6 - 6,4
+			if((state[x][y-1].getPiece() !=null) &&  
+			   (state[x-1][y].getPiece() !=null))
+				result=false;	
+			
+		}
+		else { //middle positions
+			if((state[x+1][y].getPiece() !=null) &&  
+					   (state[x][y-1].getPiece() !=null) &&
+					   (state[x-1][y].getPiece() !=null) &&
+					   (state[x][y+1].getPiece() !=null))
+						result=false;	
+							
+		}	
+	
+	 
+	 return result;
+}
 	
 	public void printBoard(Cell [][] b){
 		

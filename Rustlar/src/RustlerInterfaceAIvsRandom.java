@@ -1,4 +1,5 @@
 
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,7 +16,7 @@ import java.util.Random;
 
 import javax.swing.*;
 
-public class RustlerInterfaceAIvsAI extends JFrame implements MouseListener{
+public class RustlerInterfaceAIvsRandom extends JFrame implements MouseListener{
 	
 	static Rider br1,br2,br3,br4, wr1, wr2, wr3,wr4;
 	static Horse bh, wh;
@@ -41,17 +42,17 @@ public class RustlerInterfaceAIvsAI extends JFrame implements MouseListener{
 	public static void main(String[] args) {
    
 		
-		RustlerInterfaceAIvsAI rustler=new RustlerInterfaceAIvsAI();
+		RustlerInterfaceAIvsRandom rustler=new RustlerInterfaceAIvsRandom();
 	
 	}		
 	
-	public RustlerInterfaceAIvsAI(){
+	public RustlerInterfaceAIvsRandom(){
 		
 		
 		setSize(900,650);
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Rustler Game - Minimax vs. Minimax");
+		setTitle("Rustler Game - Random vs. Minimax");
 
 		
 		
@@ -125,24 +126,27 @@ public class RustlerInterfaceAIvsAI extends JFrame implements MouseListener{
 				
 				if(previous==null && isfinished==false){
 					if (didWhiteplayed==true) {
-						c=mm.takeOldCellFromScoreForWhite(boardState);
-						c.select();
-						highlightDestinations(c.getPiece().move(boardState, c.getXPoz(), c.getYPoz()));
-						destinationlist=c.getPiece().move(boardState, c.getXPoz(), c.getYPoz());
+						randomPlayer.findAllBlacks(boardState); //This is necessary to have a black piece list for next methods
+						destinationlist=randomPlayer.highLightRandomMoves(boardState);
+						c=randomPlayer.randomSelectedCell;
 						previous=c;
+						c.select();
+				
+						highlightDestinations(destinationlist);
 						
-						c=mm.takeNewCellFromScore(boardState);
+						
+						c=randomPlayer.makeRandomMove();
+						
 						
 						c.setPiece(previous.getPiece());
 						previous.removePiece();
-						
 						previous.deselect();
 						cleanDestinations(destinationlist);
 						destinationlist.clear();
 						
+						randomPlayer.clearLists();
 						
-
-					
+						//boardState[4][4].removePiece();
 						
 						didWhiteplayed=false;
 						whosTurn.setText("Turn : White Player");

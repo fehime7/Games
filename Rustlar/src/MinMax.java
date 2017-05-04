@@ -31,7 +31,7 @@ public class MinMax {
 	}
 	
 	public Cell takeOldCellFromScore(Cell [][] b){
-		int score=minimaxnaive(b, 2, 1);
+		int score=minimaxnaive(b, 4, 1);
 		int x=bestmove.getOldX();
 		int y=bestmove.getOldY();
 		
@@ -203,7 +203,7 @@ public int minimaxnaiveforwhite(Cell [][]b , int depth, int color ){
 	}
 
 public Cell takeOldCellFromScoreForWhite(Cell [][] b){
-	int score=minimaxnaiveforwhite(b, 2, 0);
+	int score=minimaxnaiveforwhite(b, 4, 0);
 	int x=bestmove.getOldX();
 	int y=bestmove.getOldY();
 	

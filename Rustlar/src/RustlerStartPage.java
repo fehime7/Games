@@ -8,11 +8,12 @@ import javax.swing.*;
 public class RustlerStartPage extends JFrame{
 	
 	JLabel firstPlayer, secondPlayer;
-	JRadioButton humanPlayer1, computerPlayerRandom, computerPlayerMinmax, humanPlayer2, computerRandomPlayer1;
+	JRadioButton humanPlayer1, computerPlayerRandom, computerPlayerMinmax, humanPlayer2, computerRandomPlayer1, minimaxPlayer2;
 	ButtonGroup group1, group2;
 	JButton goButton;
 	Player whitePlayer, blackPlayer;
 	boolean whichComputerPlayer; //true for minimax false for random
+	JTextField depth1, depth2;
 	
 	public RustlerStartPage(){
 		
@@ -40,17 +41,29 @@ public class RustlerStartPage extends JFrame{
 		computerRandomPlayer1.setSize(150, 30);
 		computerRandomPlayer1.setLocation(60, 80);
 		
+		minimaxPlayer2= new JRadioButton("Minimax Player:");
+		minimaxPlayer2.setSize(150, 30);
+		minimaxPlayer2.setLocation(60, 140);
+		
+		depth1=new JTextField("depth 1");
+		depth1.setSize(70, 30);
+		depth1.setLocation(90, 170);
+		
 		computerPlayerRandom= new JRadioButton("Random Player:");
 		computerPlayerRandom.setSize(150, 30);
 		computerPlayerRandom.setLocation(250, 80);
 		
 		computerPlayerMinmax= new JRadioButton("MiniMax Player:");
 		computerPlayerMinmax.setSize(150, 30);
-		computerPlayerMinmax.setLocation(250, 110);
+		computerPlayerMinmax.setLocation(250, 140);
+		
+		depth2=new JTextField("depth 2");
+		depth2.setSize(70, 30);
+		depth2.setLocation(270, 170);
 		
 		humanPlayer2= new JRadioButton("Human Player:");
 		humanPlayer2.setSize(150, 30);
-		humanPlayer2.setLocation(250, 140);
+		humanPlayer2.setLocation(250, 110);
 		
 		group1=new ButtonGroup();
 		group1.add(computerPlayerRandom);
@@ -60,17 +73,18 @@ public class RustlerStartPage extends JFrame{
 		group2=new ButtonGroup();
 		group2.add(humanPlayer1);
 		group2.add(computerRandomPlayer1);
+		group2.add(minimaxPlayer2);
 		
 		goButton= new JButton("START");
 		goButton.setSize(100, 50);
-		goButton.setLocation(165, 180);
+		goButton.setLocation(165, 200);
 		
 		goButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if( humanPlayer1.isSelected() && computerPlayerRandom.isSelected()) {
+				if( humanPlayer1.isSelected() && computerPlayerRandom.isSelected() ) {
 					new RustlerInterface();
 					//whichComputerPlayer=false;
 				    
@@ -83,9 +97,12 @@ public class RustlerStartPage extends JFrame{
 					//whichComputerPlayer=true;
 				}
 				else if(computerRandomPlayer1.isSelected() && computerPlayerMinmax.isSelected()){
-				new RustlerInterfaceAIvsAI();
+				new RustlerInterfaceAIvsRandom();
 				//whichComputerPlayer=true;
-			}
+				
+				}else if (computerPlayerMinmax.isSelected() && minimaxPlayer2.isSelected()) {
+					new RustlerInterfaceAIvsAI();
+				}
 		
 			
 				else {
@@ -125,7 +142,10 @@ public class RustlerStartPage extends JFrame{
 		add(computerRandomPlayer1);
 		add(computerPlayerRandom);
 		add(computerPlayerMinmax);
+		add(minimaxPlayer2);
 		add(humanPlayer2);
+		add(depth1);
+		add(depth2);
 		add(goButton);
 
 		
